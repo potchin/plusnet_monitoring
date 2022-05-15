@@ -136,6 +136,8 @@ def send_to_influx(output_data):
         influx_host, influx_port, influx_user, influx_pass, influx_db
     )
 
+    return client.write_points(json_body)
+
 
 def main():
     output_data = get_data_from_router()
