@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: dsl-stats
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: stats
+            image: docker.io/jeffers/plusnet_monitoring:latest
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: ROUTER_IP
+                value: "modem.lan"
+              - name: INFLUX_HOST
+                value: "influxdb.svc"
+              - name: INFLUX_DB
+                value: "modemstats"
+          restartPolicy: Never

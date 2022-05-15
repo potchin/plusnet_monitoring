@@ -11,11 +11,13 @@ Thanks to @hamishcoleman who did something [similar](https://github.com/hamishco
 You have a few options if you want to run this yourself...
 
 - clone the repo, install the python dependencies listed in the `requirements.txt` file and run `monitor.py`
-- run the docker image either periodically from cron, something like...
+- run the docker image either periodically from cron, something like the below. Change `podman` for `docker` if you're still on old-school docker...
+
     `podman run -e INFLUX_DB=modemstats -e ROUTER_IP=modem.lan -e INFLUX_HOST=10.43.238.72 docker.io/jeffers/plusnet_monitoring:latest`
 - run the image in the background with the a `REPORT_INTERVAL` value. This will leave the container running..
+
     `podman run -d -e REPORT_INTERVAL=60 -e ROUTER_IP=modem.lan -e INFLUX_HOST=10.43.238.72 docker.io/jeffers/plusnet_monitoring:latest`
-- run as a cron job inside kubernetes
+- run as a cron job inside kubernetes (see [example](k8s_manifest.yml))
 
 
 ## Configuration
