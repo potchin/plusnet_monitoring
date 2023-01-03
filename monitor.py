@@ -44,7 +44,8 @@ def parseArray(valuestr):
 
 
 def get_data_from_router():
-    r = requests.get(f"http://{router_ip}/nonAuth/wan_conn.xml")
+    headers = {"Referer": f"http://{router_ip}/basic_-_status.htm"}
+    r = requests.get(f"http://{router_ip}/nonAuth/wan_conn.xml", headers=headers)
     r.raise_for_status()
 
     root = ET.fromstring(r.content)
