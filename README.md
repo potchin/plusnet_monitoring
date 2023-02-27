@@ -40,3 +40,46 @@ The script is designed to run in a docker container so all config is read from t
 If you have InfluxDb then you've probably heard of [Grafana](https://grafana.com/). Use that...
 
 ![grafana_stats.png](grafana_stats.png "grafana")
+
+If you're down with the kids and run [Home Assistant](https://www.home-assistant.io/) then you can also create sensors with
+the latest value from InfluxDB with something like...
+
+```
+sensor:
+  - platform: influxdb
+    host: influxdb
+    port: 8086
+    queries:
+      - name: dsl_rate_down
+        unit_of_measurement: "Mbit/sec"
+        value_template: "{{ (int(value) /1024) | round(1) }}"
+        where:  'time >= now() - 1h'
+        measurement: rate_down
+        field: "value"
+        group_function: last
+        database: routerstats
+      - name: dsl_rate_up
+        unit_of_measurement: "Mbit/sec"
+        value_template: "{{ (int(value) /1024) | round(1) }}"
+        where:  'time >= now() - 1h'
+        measurement: rate_up
+        field: "value"
+        group_function: last
+        database: routerstats
+      - name: dsl_attainable_rate_down
+        unit_of_measurement: "Mbit/sec"
+        value_template: "{{ (int(value) /1024) | round(1) }}"
+        where:  'time >= now() - 1h'
+        measurement: attainable_rate_down
+        field: "value"
+        group_function: last
+        database: routerstats
+      - name: dsl_attainable_rate_up
+        unit_of_measurement: "Mbit/sec"
+        value_template: "{{ (int(value) /1024) | round(1)}}"
+        where:  'time >= now() - 1h'
+        measurement: attainable_rate_up
+        field: "value"
+        group_function: last
+        database: routerstats
+```
